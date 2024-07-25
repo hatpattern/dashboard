@@ -79,7 +79,10 @@ for orgid, smaller_df in grouped:
 # Convert the list of dictionaries to a DataFrame and sort the DataFrame by the 'completions' column in descending order
 df = pd.DataFrame(orgid_data)
 df = df.sort_values('completions', ascending=False)
-print(df.to_string())
+
+# print("DATA")
+# print(df.to_string())
+
 
 ## Step 5 Scrape the data from redhat
 
@@ -204,6 +207,10 @@ with concurrent.futures.ThreadPoolExecutor() as executor:
 # Pair the scraped data to the dataframe
 df[['account','orgname','accounts','email','active_sku', 'expired_sku', 'expiration_date']] = df['orgid'].apply(lambda id: pd.Series(orgid_datadict[id]))
 
+print("SCRAPED")
+#print(df.to_string())
+print(df['orgid'].sort_values().to_string())
+
 ## Step 6: Process daterange data
 
 dates_df = pd.read_csv(daterange, skiprows=6)
@@ -225,6 +232,9 @@ for index, row in dates_df.iloc[:, 1:].iterrows():
     # Concatenate the new DataFrame with the existing DataFrame
     dateprocess_df = pd.concat([dateprocess_df, row_df], ignore_index=True)
 
+print("Dates:")
+#print(dateprocess_df.to_string())
+print(dateprocess_df['orgid'].sort_values().to_string())
 ## Step 7: Read in the history of the dates
 
 # Get dataframe froms heets
@@ -293,6 +303,7 @@ dashboard_mainsheet = get_dashboard_worksheet(today_str)
 header = f"As of {today_str}"
 subtitle = "(over the past 90 days)"
 blank = ""
+# TODO: Fix me (totals or 90 days be pacific)
 total_orgs = str(final_customer_data['orgid'].nunique())
 total_users = str(final_customer_data['users'].sum())
 total_completions = str(final_customer_data['completions'].sum())
@@ -302,7 +313,7 @@ top_five_rows = final_customer_data.nlargest(5, 'completions')
 top_five_rows = top_five_rows[['orgname', 'completions', 'users']]
 top_five_leaderboard = top_five_rows.values.tolist()
 
-sorted_by_start_date = final_customer_data.sort_values(by=['oldest_start_date', 'completions']).reset_index(drop=True)
+sorted_by_start_date = append_df.sort_values(by=['oldest_start_date', 'completions']).reset_index(drop=True)
 
 def standardize_times(month, year):
     return month + year*12
