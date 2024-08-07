@@ -21,6 +21,7 @@ if not dashboard:
 
 ## Step 2 Get cookies
 
+# TODO: Add argparse cookie collection
 with open('./cookies.txt', 'r') as cookiefile:
     amplitude_cookie = cookiefile.readline().rstrip()
     redhat_cookie = cookiefile.readline().rstrip()
@@ -40,6 +41,7 @@ amplitude_headers = {
 amplitude_request_data="definition=%7B%22colorAssignments%22%3A%7B%7D%2C%22customSerieLabels%22%3A%7B%7D%2C%22customXAxisLabels%22%3A%7B%7D%2C%22disabledParamPaths%22%3A%5B%5D%2C%22featureTags%22%3A%7B%7D%2C%22filter%22%3A%22%22%2C%22hasLoaded%22%3Atrue%2C%22id%22%3Anull%2C%22name%22%3A%22Completions+per+Org+IDs+with+modelNames+and+Users+%28with+org+filter%29%22%2C%22params%22%3A%7B%22interval%22%3A1%2C%22segments%22%3A%5B%7B%22name%22%3A%22%E2%89%A0+Lightspeed+Internal%2C+Community+Test%2C+Test+Cohort%22%2C%22conditions%22%3A%5B%7B%22op%22%3A%22is+not%22%2C%22prop%22%3A%22userdata_cohort%22%2C%22type%22%3A%22property%22%2C%22values%22%3A%5B%22x195odl%22%2C%227ycpahuz%22%2C%22z6igeqt%22%5D%2C%22prop_type%22%3A%22user%22%2C%22group_type%22%3A%22User%22%7D%5D%2C%22_id%22%3A%22b2da2b79-6513-4635-ba93-d683e10f65e4%22%2C%22label%22%3A%22%22%7D%5D%2C%22groupBy%22%3A%5B%5D%2C%22rows%22%3A%5B%7B%22id%22%3A%22overall%22%2C%22label%22%3A%22Overall%22%2C%22params%22%3A%7B%22filter%22%3A%5B%5D%2C%22group_by%22%3A%5B%7B%22type%22%3A%22event%22%2C%22value%22%3A%22rh_user_org_id%22%2C%22group_type%22%3A%22User%22%7D%2C%7B%22type%22%3A%22event%22%2C%22value%22%3A%22modelName%22%2C%22group_type%22%3A%22User%22%7D%2C%7B%22type%22%3A%22user%22%2C%22value%22%3A%22user_id%22%2C%22group_type%22%3A%22User%22%7D%5D%7D%2C%22parentIdPath%22%3A%5B%5D%7D%5D%2C%22range%22%3A%22Last+90+Days%22%2C%22table%22%3A%7B%22rows%22%3A%5B%7B%22dimensionHierarchy%22%3A%7B%22subDimensions%22%3A%5B%5D%2C%22dimensionsWithFilters%22%3A%5B%7B%22filters%22%3A%5B%5D%2C%22dimension%22%3A%7B%22type%22%3A%22GROUP_BY%22%2C%22params%22%3A%7B%22groupBy%22%3A%7B%22type%22%3A%22event%22%2C%22value%22%3A%22rh_user_org_id%22%2C%22group_type%22%3A%22User%22%7D%7D%7D%7D%2C%7B%22filters%22%3A%5B%5D%2C%22dimension%22%3A%7B%22type%22%3A%22GROUP_BY%22%2C%22params%22%3A%7B%22groupBy%22%3A%7B%22type%22%3A%22event%22%2C%22value%22%3A%22modelName%22%2C%22group_type%22%3A%22User%22%7D%7D%7D%7D%2C%7B%22filters%22%3A%5B%5D%2C%22dimension%22%3A%7B%22type%22%3A%22GROUP_BY%22%2C%22params%22%3A%7B%22groupBy%22%3A%7B%22type%22%3A%22user%22%2C%22value%22%3A%22user_id%22%2C%22group_type%22%3A%22User%22%7D%7D%7D%7D%5D%2C%22parentDimensionFilters%22%3A%5B%5D%7D%7D%5D%2C%22columns%22%3A%5B%7B%22id%22%3A%22adab7bf8-7068-48b9-8b2c-e4befc0a8909%22%2C%22type%22%3A%22METRIC%22%2C%22params%22%3A%7B%22metric%22%3A%7B%22id%22%3A%22%22%2C%22name%22%3A%22%22%2C%22type%22%3A%22TOTALS%22%2C%22appId%22%3A%22428233%22%2C%22orgId%22%3A%22170477%22%2C%22params%22%3A%7B%22type%22%3A%22TOTALS%22%2C%22params%22%3A%7B%22event%22%3A%7B%22_id%22%3A%222e53acb4-a40d-4945-a957-d719ee435e33%22%2C%22filters%22%3A%5B%5D%2C%22group_by%22%3A%5B%5D%2C%22event_type%22%3A%22completion%22%7D%2C%22countGroup%22%3A%7B%22name%22%3A%22User%22%2C%22is_computed%22%3Afalse%7D%2C%22attributionParams%22%3Anull%2C%22multiPropertyFilters%22%3A%5B%5D%7D%7D%2C%22deleted%22%3Afalse%2C%22version%22%3A1%2C%22createdAt%22%3A0%2C%22createdBy%22%3A%22%22%2C%22deletedAt%22%3Anull%2C%22deletedBy%22%3Anull%2C%22updatedAt%22%3Anull%2C%22updatedBy%22%3Anull%2C%22isOfficial%22%3Afalse%2C%22description%22%3A%22%22%7D%2C%22filters%22%3A%5B%7B%22group_type%22%3A%7B%22name%22%3A%22User%22%2C%22is_computed%22%3Afalse%7D%2C%22subprop_op%22%3A%22is%22%2C%22subprop_key%22%3A%22rh_user_has_seat%22%2C%22subprop_type%22%3A%22event%22%2C%22subprop_value%22%3A%5B%22True%22%5D%7D%2C%7B%22group_type%22%3A%7B%22name%22%3A%22User%22%2C%22is_computed%22%3Afalse%7D%2C%22subprop_op%22%3A%22is+not%22%2C%22subprop_key%22%3A%22rh_user_org_id%22%2C%22subprop_type%22%3A%22event%22%2C%22subprop_value%22%3A%5B%22%28none%29%22%2C%221979710%22%2C%228070623%22%2C%2211688131%22%2C%2212508446%22%2C%2213441753%22%2C%2213859376%22%2C%2216037076%22%2C%2217329057%22%2C%2217380863%22%2C%2217443992%22%2C%2217557146%22%2C%2213162754%22%2C%2217233726%22%2C%2212444807%22%2C%226528611%22%2C%2217218092%22%2C%2211015602%22%2C%2212521983%22%2C%2213147084%22%2C%2211009103%22%2C%2213247185%22%2C%22852656%22%2C%226340056%22%2C%2215746564%22%2C%229999999999%22%2C%2217321086%22%2C%2213141780%22%2C%2217507144%22%2C%2211331435%22%2C%224340048%22%2C%2217691404%22%2C%2214077179%22%2C%2211789772%22%2C%2214090544%22%2C%2217261415%22%2C%2211231301%22%2C%2215782727%22%2C%2213038026%22%2C%228082919%22%2C%2215467510%22%2C%2213015479%22%2C%2212638394%22%2C%2212878962%22%2C%2213771296%22%2C%2216481794%22%2C%2217695330%22%2C%2217694947%22%2C%2217698734%22%2C%2217699360%22%2C%2216081073%22%2C%2216217840%22%2C%2216187451%22%2C%2212695877%22%2C%2213738920%22%2C%2215884643%22%2C%227708734%22%2C%2212310465%22%2C%227271256%22%2C%2213722165%22%2C%2217782365%22%2C%2217777981%22%2C%2215843917%22%2C%2213091065%22%2C%2215910785%22%2C%2217797812%22%2C%2215959250%22%2C%2217803656%22%2C%2212849719%22%2C%227870487%22%2C%2215274723%22%2C%2217663081%22%2C%2217815107%22%2C%2217810914%22%2C%2213075222%22%2C%2217781009%22%5D%7D%2C%7B%22group_type%22%3A%7B%22name%22%3A%22User%22%2C%22is_computed%22%3Afalse%7D%2C%22subprop_op%22%3A%22is+not%22%2C%22subprop_key%22%3A%22modelName%22%2C%22subprop_type%22%3A%22event%22%2C%22subprop_value%22%3A%5B%22%28none%29%22%2C%22language%3Dansible%22%2C%22ansible-wisdom-v11%22%5D%7D%5D%2C%22segments%22%3A%5B%5D%7D%2C%22dimensionHierarchy%22%3A%7B%22subDimensions%22%3A%5B%5D%2C%22dimensionsWithFilters%22%3A%5B%5D%2C%22parentDimensionFilters%22%3A%5B%5D%7D%7D%5D%2C%22sorting%22%3A%7B%22period%22%3Anull%2C%22columnId%22%3A%22adab7bf8-7068-48b9-8b2c-e4befc0a8909%22%2C%22direction%22%3A%22desc%22%2C%22columnType%22%3A%22metric%22%2C%22segmentIndex%22%3A0%7D%7D%2C%22columns%22%3A%5B%7B%22id%22%3A%22adab7bf8-7068-48b9-8b2c-e4befc0a8909%22%2C%22type%22%3A%22METRIC%22%2C%22params%22%3A%7B%22metric%22%3A%7B%22id%22%3A%22%22%2C%22name%22%3A%22%22%2C%22type%22%3A%22TOTALS%22%2C%22appId%22%3A%22428233%22%2C%22orgId%22%3A%22170477%22%2C%22params%22%3A%7B%22type%22%3A%22TOTALS%22%2C%22params%22%3A%7B%22type%22%3A%22TOTALS%22%2C%22event%22%3A%7B%22_id%22%3A%222e53acb4-a40d-4945-a957-d719ee435e33%22%2C%22filters%22%3A%5B%5D%2C%22group_by%22%3A%5B%5D%2C%22event_type%22%3A%22completion%22%7D%7D%7D%2C%22deleted%22%3Afalse%2C%22version%22%3A1%2C%22createdAt%22%3A0%2C%22createdBy%22%3A%22%22%2C%22deletedAt%22%3Anull%2C%22deletedBy%22%3Anull%2C%22updatedAt%22%3Anull%2C%22updatedBy%22%3Anull%2C%22isOfficial%22%3Afalse%2C%22description%22%3A%22%22%2C%22isRestricted%22%3Afalse%7D%2C%22filters%22%3A%5B%7B%22group_type%22%3A%22User%22%2C%22subfilters%22%3A%5B%5D%2C%22subprop_op%22%3A%22is%22%2C%22subprop_key%22%3A%22rh_user_has_seat%22%2C%22subprop_type%22%3A%22event%22%2C%22subprop_value%22%3A%5B%22True%22%5D%7D%2C%7B%22group_type%22%3A%22User%22%2C%22subprop_op%22%3A%22is+not%22%2C%22subprop_key%22%3A%22rh_user_org_id%22%2C%22subprop_type%22%3A%22event%22%2C%22subprop_value%22%3A%5B%22%28none%29%22%2C%221979710%22%2C%228070623%22%2C%2211688131%22%2C%2212508446%22%2C%2213441753%22%2C%2213859376%22%2C%2216037076%22%2C%2217329057%22%2C%2217380863%22%2C%2217443992%22%2C%2217557146%22%2C%2213162754%22%2C%2217233726%22%2C%2212444807%22%2C%226528611%22%2C%2217218092%22%2C%2211015602%22%2C%2212521983%22%2C%2213147084%22%2C%2211009103%22%2C%2213247185%22%2C%22852656%22%2C%226340056%22%2C%2215746564%22%2C%229999999999%22%2C%2217321086%22%2C%2213141780%22%2C%2217507144%22%2C%2211331435%22%2C%224340048%22%2C%2217691404%22%2C%2214077179%22%2C%2211789772%22%2C%2214090544%22%2C%2217261415%22%2C%2211231301%22%2C%2215782727%22%2C%2213038026%22%2C%228082919%22%2C%2215467510%22%2C%2213015479%22%2C%2212638394%22%2C%2212878962%22%2C%2213771296%22%2C%2216481794%22%2C%2217695330%22%2C%2217694947%22%2C%2217698734%22%2C%2217699360%22%2C%2216081073%22%2C%2216217840%22%2C%2216187451%22%2C%2212695877%22%2C%2213738920%22%2C%2215884643%22%2C%227708734%22%2C%2212310465%22%2C%227271256%22%2C%2213722165%22%2C%2217782365%22%2C%2217777981%22%2C%2215843917%22%2C%2213091065%22%2C%2215910785%22%2C%2217797812%22%2C%2215959250%22%2C%2217803656%22%2C%2212849719%22%2C%227870487%22%2C%2215274723%22%2C%2217663081%22%2C%2217815107%22%2C%2217810914%22%2C%2213075222%22%2C%2217781009%22%5D%7D%2C%7B%22group_type%22%3A%22User%22%2C%22subprop_op%22%3A%22is+not%22%2C%22subprop_key%22%3A%22modelName%22%2C%22subprop_type%22%3A%22event%22%2C%22subprop_value%22%3A%5B%22%28none%29%22%2C%22language%3Dansible%22%2C%22ansible-wisdom-v11%22%5D%7D%5D%2C%22segments%22%3A%5B%5D%7D%7D%5D%2C%22countGroup%22%3A%22User%22%7D%2C%22recycledColors%22%3A%5B%5D%2C%22selectedSet%22%3A%7B%7D%2C%22selectingMaxAllowed%22%3Afalse%2C%22seriesSize%22%3A0%2C%22sortedBy%22%3A%7B%22columnIndex%22%3Anull%2C%22columnId%22%3Anull%2C%22dimensionIndex%22%3Anull%2C%22direction%22%3Anull%7D%2C%22userSelected%22%3Afalse%2C%22viewParams%22%3A%7B%22columnConfigs%22%3A%7B%22ag-Grid-AutoColumn%22%3A%7B%22width%22%3A303%7D%2C%22group-by-col-tasks%22%3A%7B%22width%22%3A173%7D%2C%22group-by-col-user_id%22%3A%7B%22width%22%3A213%7D%2C%22empty-global-group-by%22%3A%7B%22width%22%3A193%7D%2C%22group-by-col-modelName%22%3A%7B%22width%22%3A670%7D%2C%22group-by-col-promptType%22%3A%7B%22width%22%3A209%7D%2C%22group-by-col-rh_user_org_id%22%3A%7B%22width%22%3A228%7D%2C%22group-by-col-rh_user_has_seat%22%3A%7B%22width%22%3A241%7D%2C%22adab7bf8-7068-48b9-8b2c-e4befc0a8909%22%3A%7B%22width%22%3A248%2C%22sortDirection%22%3A%22desc%22%7D%7D%7D%2C%22customizedTopSelectionValue%22%3Anull%2C%22app%22%3A%22428233%22%2C%22type%22%3A%22dataTableV2%22%2C%22version%22%3A37%2C%22description%22%3A%22%22%2C%22shouldShowConciseDateFormat%22%3Atrue%2C%22shouldShowTwoYearRange%22%3Afalse%2C%22currencyLocale%22%3A%22en-us%22%7D&downloadId=&chart_id=vqxplqr9&edit_id=xbeqj1ti&headers=%5B%5D"
 completions_csv_request = requests.post("https://analytics.amplitude.com/data/428233/csv", headers=amplitude_headers, allow_redirects=True, verify=False, data=amplitude_request_data)
 amplitude_daterange_request_data="definition=%7B%22vis%22%3A%22line%22%2C%22recycledColors%22%3A%5B%5D%2C%22app%22%3A%22428233%22%2C%22colorAssignments%22%3A%7B%7D%2C%22shouldShowTwoYearRange%22%3Afalse%2C%22params%22%3A%7B%22segments%22%3A%5B%7B%22name%22%3A%22All+Users%22%2C%22conditions%22%3A%5B%5D%2C%22_id%22%3A%22b2da2b79-6513-4635-ba93-d683e10f65e4%22%2C%22label%22%3A%22%22%7D%5D%2C%22interval%22%3A1%2C%22nthTimeLookbackWindow%22%3A365%2C%22formula%22%3A%22UNIQUES%28A%29%22%2C%22metric%22%3A%22formula%22%2C%22countGroup%22%3A%22User%22%2C%22groupBy%22%3A%5B%5D%2C%22events%22%3A%5B%7B%22_id%22%3A%221c4a19a2-b247-4fab-b93c-bee6dbf8dd44%22%2C%22filters%22%3A%5B%5D%2C%22group_by%22%3A%5B%7B%22type%22%3A%22event%22%2C%22value%22%3A%22rh_user_org_id%22%2C%22group_type%22%3A%22User%22%7D%5D%2C%22event_type%22%3A%22completion%22%7D%5D%2C%22range%22%3A%22Last+90+Days%22%7D%2C%22userSelected%22%3Afalse%2C%22customXAxisLabels%22%3A%7B%7D%2C%22selectedSet%22%3A%7B%7D%2C%22customSerieLabels%22%3A%7B%7D%2C%22selectingMaxAllowed%22%3Afalse%2C%22viewParams%22%3A%7B%22metrics%22%3A%7B%22takeawayType%22%3A%22OVERALL_VALUE%22%7D%7D%2C%22currencyLocale%22%3A%22en-us%22%2C%22name%22%3A%22Completions+by+OrgID+with+past+90+days+of+activity%22%2C%22featureTags%22%3A%7B%7D%2C%22shouldShowConciseDateFormat%22%3Atrue%2C%22sortedBy%22%3A%7B%22columnIndex%22%3Anull%2C%22columnId%22%3Anull%2C%22dimensionIndex%22%3Anull%2C%22direction%22%3Anull%7D%2C%22version%22%3A37%2C%22seriesSize%22%3A100%2C%22filter%22%3A%22%22%2C%22customizedTopSelectionValue%22%3Anull%2C%22type%22%3A%22eventsSegmentation%22%2C%22id%22%3Anull%2C%22description%22%3A%22%22%2C%22disabledParamPaths%22%3A%5B%5B%22histogramConfigBin%22%5D%2C%5B%22customBuckets%22%5D%5D%2C%22hasLoaded%22%3Atrue%7D&downloadId=q3U9VUC&chart_id=undefined&edit_id=undefined&headers=%5B%5B%22https%3A%2F%2Fapp.amplitude.com%2Fanalytics%2Fredhat%2Fchart%2Fnew%2Ftovo0sh7%22%5D%5D"
+#amplitude_daterange_request_data="definition=%7B%22vis%22%3A%22line%22%2C%22recycledColors%22%3A%5B%5D%2C%22app%22%3A%22428233%22%2C%22colorAssignments%22%3A%7B%7D%2C%22shouldShowTwoYearRange%22%3Afalse%2C%22params%22%3A%7B%22interval%22%3A1%2C%22segments%22%3A%5B%7B%22name%22%3A%22%E2%89%A0+Lightspeed+Internal%2C+Community+Test%2C+Test+Cohort%22%2C%22conditions%22%3A%5B%7B%22op%22%3A%22is+not%22%2C%22prop%22%3A%22userdata_cohort%22%2C%22type%22%3A%22property%22%2C%22values%22%3A%5B%22x195odl%22%2C%227ycpahuz%22%2C%22z6igeqt%22%5D%2C%22prop_type%22%3A%22user%22%2C%22group_type%22%3A%22User%22%7D%5D%2C%22_id%22%3A%22b2da2b79-6513-4635-ba93-d683e10f65e4%22%2C%22label%22%3A%22%22%7D%5D%2C%22groupBy%22%3A%5B%5D%2C%22range%22%3A%22Last+90+Days%22%2C%22events%22%3A%5B%7B%22_id%22%3A%22b4778cfa-87ef-46d4-b756-714aaf3dbb10%22%2C%22filters%22%3A%5B%7B%22group_type%22%3A%7B%22name%22%3A%22User%22%2C%22is_computed%22%3Afalse%7D%2C%22subprop_op%22%3A%22is%22%2C%22subprop_key%22%3A%22rh_user_has_seat%22%2C%22subprop_type%22%3A%22event%22%2C%22subprop_value%22%3A%5B%22True%22%5D%7D%2C%7B%22group_type%22%3A%7B%22name%22%3A%22User%22%2C%22is_computed%22%3Afalse%7D%2C%22subprop_op%22%3A%22is+not%22%2C%22subprop_key%22%3A%22modelName%22%2C%22subprop_type%22%3A%22event%22%2C%22subprop_value%22%3A%5B%22%28none%29%22%2C%22language%3Dansible%22%2C%22ansible-wisdom-v11%22%5D%7D%2C%7B%22group_type%22%3A%22User%22%2C%22subprop_op%22%3A%22is%22%2C%22subprop_key%22%3A%22response.status_code%22%2C%22subprop_type%22%3A%22event%22%2C%22subprop_value%22%3A%5B%22200%22%5D%7D%2C%7B%22group_type%22%3A%22User%22%2C%22subprop_op%22%3A%22is+not%22%2C%22subprop_key%22%3A%22rh_user_org_id%22%2C%22subprop_type%22%3A%22event%22%2C%22subprop_value%22%3A%5B%229999999999%22%5D%7D%5D%2C%22group_by%22%3A%5B%7B%22type%22%3A%22event%22%2C%22value%22%3A%22rh_user_org_id%22%2C%22group_type%22%3A%22User%22%7D%5D%2C%22event_type%22%3A%22completion%22%7D%5D%2C%22metric%22%3A%22totals%22%2C%22countGroup%22%3A%22User%22%2C%22nthTimeLookbackWindow%22%3A365%7D%2C%22userSelected%22%3Afalse%2C%22customXAxisLabels%22%3A%7B%7D%2C%22selectedSet%22%3A%7B%7D%2C%22customSerieLabels%22%3A%7B%7D%2C%22selectingMaxAllowed%22%3Afalse%2C%22viewParams%22%3A%7B%22metrics%22%3A%7B%22takeawayType%22%3A%22OVERALL_VALUE%22%7D%7D%2C%22currencyLocale%22%3A%22en-us%22%2C%22name%22%3A%22Completions+by+OrgID+with+past+90+days+of+activity%22%2C%22featureTags%22%3A%7B%7D%2C%22shouldShowConciseDateFormat%22%3Atrue%2C%22sortedBy%22%3A%7B%22columnIndex%22%3Anull%2C%22columnId%22%3Anull%2C%22dimensionIndex%22%3Anull%2C%22direction%22%3Anull%7D%2C%22version%22%3A37%2C%22seriesSize%22%3A100%2C%22filter%22%3A%22%22%2C%22customizedTopSelectionValue%22%3Anull%2C%22type%22%3A%22eventsSegmentation%22%2C%22id%22%3Anull%2C%22description%22%3A%22%22%2C%22disabledParamPaths%22%3A%5B%5D%2C%22hasLoaded%22%3Atrue%7D&downloadId=qchqrTe&chart_id=undefined&edit_id=undefined&headers=%5B%5B%22https%3A%2F%2Fapp.amplitude.com%2Fanalytics%2Fredhat%2Fchart%2F5tv4x94y%22%5D%5D"
 
 daterange_csv_request = requests.post("https://analytics.amplitude.com/data/428233/csv", headers=amplitude_headers, allow_redirects=True, verify=False, data=amplitude_daterange_request_data)
 
@@ -78,6 +80,10 @@ for orgid, smaller_df in grouped:
 # Convert the list of dictionaries to a DataFrame and sort the DataFrame by the 'completions' column in descending order
 df = pd.DataFrame(orgid_data)
 df = df.sort_values('completions', ascending=False)
+
+# print("DATA")
+# print(df.to_string())
+
 
 ## Step 5 Scrape the data from redhat
 
@@ -202,9 +208,9 @@ with concurrent.futures.ThreadPoolExecutor() as executor:
 # Pair the scraped data to the dataframe
 df[['account','orgname','accounts','email','active_sku', 'expired_sku', 'expiration_date']] = df['orgid'].apply(lambda id: pd.Series(orgid_datadict[id]))
 
-#print("SCRAPED")
+print("SCRAPED")
 #print(df.to_string())
-#print(df['orgid'].sort_values().to_string())
+print(df['orgid'].sort_values().to_string())
 
 ## Step 6: Process daterange data
 
@@ -227,25 +233,21 @@ for index, row in dates_df.iloc[:, 1:].iterrows():
     # Concatenate the new DataFrame with the existing DataFrame
     dateprocess_df = pd.concat([dateprocess_df, row_df], ignore_index=True)
 
-#print(dateprocess_df)
-#print(type(dateprocess_df))
 dateprocess_df = dateprocess_df.dropna(subset=['orgid'])
-#print("Dates:")
+print("Dates:")
 #print(dateprocess_df.to_string())
-#print(dateprocess_df['orgid'].sort_values().to_string())
+print(dateprocess_df['orgid'].sort_values().to_string())
 ## Step 7: Read in the history of the dates
 
-# Get dataframe from sheets
+# Get dataframe froms heets
 running_final_sheet = dashboard.worksheet("running-final")
 running_final = get_as_dataframe(running_final_sheet)
 
 
 # Standardize the types
-dateprocess_df = dateprocess_df[dateprocess_df['orgid'] != '\t(none)']
 dateprocess_df['orgid'] = pd.to_numeric(dateprocess_df['orgid'])
 dateprocess_df[['new_date_start', 'new_date_end']] = dateprocess_df[['new_date_start', 'new_date_end']].apply(lambda x: pd.to_datetime(x, format='mixed'))
-
-running_final['orgid'] = pd.to_numeric(running_final['orgid'], downcast='integer')
+running_final['orgid'] = pd.to_numeric(running_final['orgid'])
 running_final[['start_date', 'end_date']] = running_final[['start_date', 'end_date']].apply(pd.to_datetime)
 
 # Find the proper start and end dates
@@ -268,6 +270,7 @@ merged_dates['newest_end_date'] = merged_dates.apply(find_newest_end_date, axis=
 final_dates = merged_dates[['orgid', 'oldest_start_date', 'newest_end_date']]
 
 final_data = pd.merge(df, final_dates, on='orgid')
+final_data['email'] = final_data['email'].str.split('@').str[1]
 
 ## Step 8
 # Separate customer and internal users
@@ -276,25 +279,9 @@ dashboard.worksheet('Organizations-dynamic-cohorts')
 final_customer_data = final_data[~final_data['email'].str.contains('ibm.com|redhat.com')]
 
 new_customers_df = final_customer_data[~final_customer_data.orgid.isin(running_final.orgid)]
-
 append_df = running_final[~running_final.orgid.isin(final_customer_data.orgid)]
-# 1. Remove the 'expiration_date' column
-final_customer_data = final_customer_data.drop(columns=['expiration_date'])
 
-# 2. Merge 'active_sku' and 'expired_sku' columns, dropping NaNs
-final_customer_data['sku'] = final_customer_data['active_sku'].combine_first(final_customer_data['expired_sku'])
-
-# 3. Drop the old columns 'active_sku' and 'expired_sku'
-final_customer_data = final_customer_data.drop(columns=['active_sku', 'expired_sku'])
-
-# 4. Rename 'oldest_start_date' to 'start_date' and 'newest_end_date' to 'end_date'
-final_customer_data = final_customer_data.rename(columns={'oldest_start_date': 'start_date', 'newest_end_date': 'end_date'})
-
-print(final_customer_data.to_string())
-print(running_final.to_string())
-new_running_final = pd.merge(final_customer_data, running_final, on='orgid', how='left')
-
-set_with_dataframe(running_final_sheet, new_running_final)
+set_with_dataframe(running_final_sheet, append_df)
 
 ## Step 9: Ouput the results into google sheets
 today = date.today()
@@ -318,17 +305,17 @@ dashboard_mainsheet = get_dashboard_worksheet(today_str)
 header = f"As of {today_str}"
 subtitle = "(over the past 90 days)"
 blank = ""
-total_orgs = str(new_runnign_final['orgid'].nunique())
-total_users = str(new_running_final['users'].sum())
-total_completions = str(new_running_final['completions'].sum())
+# TODO: Fix me (totals or 90 days be pacific)
+total_orgs = str(final_customer_data['orgid'].nunique())
+total_users = str(final_customer_data['users'].sum())
+total_completions = str(final_customer_data['completions'].sum())
 
 #print(top_five_rows)
 top_five_rows = final_customer_data.nlargest(5, 'completions')
 top_five_rows = top_five_rows[['orgname', 'completions', 'users']]
 top_five_leaderboard = top_five_rows.values.tolist()
 
-#print(append_df.to_string())
-sorted_by_start_date = new_running_final.sort_values(by=['oldest_start_date', 'completions']).reset_index(drop=True)
+sorted_by_start_date = append_df.sort_values(by=['oldest_start_date', 'completions']).reset_index(drop=True)
 
 def standardize_times(month, year):
     return month + year*12
