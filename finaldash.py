@@ -12,20 +12,19 @@ from datetime import date
 import gspread
 from gspread_dataframe import get_as_dataframe, set_with_dataframe
 
-## Step 1 Authenticate to google sheets
+# Authenticate spreadsheet and get cookies
+
 gc = gspread.service_account('./service-account.json')
 dashboard = gc.open('Lightspeed Telemetry Dashboard')
-
-if not dashboard:
-    raise Exception("The dashboard could not be loaded")
-
-## Step 2 Get cookies
 
 with open('./cookies.txt', 'r') as cookiefile:
     amplitude_cookie = cookiefile.readline().rstrip()
     redhat_cookie = cookiefile.readline().rstrip()
 
-## Step 3 get amplitude
+####################
+# Code starts here #
+####################
+
 amplitude_headers = {
     'Host': 'analytics.amplitude.com',
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/115.0',
@@ -54,10 +53,10 @@ if daterange_csv_request.status_code != 200:
 completions = StringIO(completions_csv_request.text)
 daterange = StringIO(daterange_csv_request.text)
 
-## Step 4 get completions into pandas
 completions_df = pd.read_csv(completions, skiprows=3)
 completions_df.columns = ['orgid', 'modelname', 'userid', 'completions']
 
+# Group by orgid
 grouped = completions_df.groupby('orgid')
 
 # Create smaller DataFrames for each OrgID
@@ -79,7 +78,7 @@ for orgid, smaller_df in grouped:
 df = pd.DataFrame(orgid_data)
 df = df.sort_values('completions', ascending=False)
 
-## Step 5 Scrape the data from redhat
+## Scrape the data from redhat
 
 def get_org_page(orgid, cookie):
     headers = {"Cookie": cookie.encode("utf-8")}
@@ -202,14 +201,10 @@ with concurrent.futures.ThreadPoolExecutor() as executor:
 # Pair the scraped data to the dataframe
 df[['account','orgname','accounts','email','active_sku', 'expired_sku', 'expiration_date']] = df['orgid'].apply(lambda id: pd.Series(orgid_datadict[id]))
 
-#print("SCRAPED")
-#print(df.to_string())
-#print(df['orgid'].sort_values().to_string())
-
-## Step 6: Process daterange data
-
+## Process daterange data
 dates_df = pd.read_csv(daterange, skiprows=6)
 
+# This section of code finds the start and end date per org id
 # Initialize an empty DataFrame to hold the first column and the result from idxmax
 dateprocess_df = pd.DataFrame(columns=['orgid', 'new_date_start', 'new_date_end'])
 
@@ -230,12 +225,7 @@ for index, row in dates_df.iloc[:, 1:].iterrows():
 #print(dateprocess_df)
 #print(type(dateprocess_df))
 dateprocess_df = dateprocess_df.dropna(subset=['orgid'])
-#print("Dates:")
-#print(dateprocess_df.to_string())
-#print(dateprocess_df['orgid'].sort_values().to_string())
-## Step 7: Read in the history of the dates
 
-# Get dataframe from sheets
 running_final_sheet = dashboard.worksheet("running-final")
 running_final = get_as_dataframe(running_final_sheet)
 
@@ -267,38 +257,147 @@ merged_dates['oldest_start_date'] = merged_dates.apply(find_oldest_start_date, a
 merged_dates['newest_end_date'] = merged_dates.apply(find_newest_end_date, axis=1)
 final_dates = merged_dates[['orgid', 'oldest_start_date', 'newest_end_date']]
 
-# THIS IS THE ERROR. I NEED TO BE MORE INTENTIONAL ABOUT
-# HOW EXACTLY I'M MERGING
-final_data = pd.merge(df, final_dates, on='orgid')
+df = pd.merge(df, final_dates, on='orgid', how='left')
+df['start_date'] = df['oldest_start_date']
+df['end_date'] = df['newest_end_date']
+df = df.drop(columns=['oldest_start_date', 'newest_end_date'])
 
-## Step 8
-# Separate customer and internal users
-# TODO: Use the orgid list in the spreadsheet to create this instead
-dashboard.worksheet('Organizations-dynamic-cohorts')
-final_customer_data = final_data[~final_data['email'].str.contains('ibm.com|redhat.com')]
+# Merge the dataframes on 'orgid'
+next_final = pd.merge(running_final, final_dates, on='orgid', how='left')
 
-new_customers_df = final_customer_data[~final_customer_data.orgid.isin(running_final.orgid)]
+# Update the 'start_date' and 'end_date' columns
+next_final['start_date'] = next_final['oldest_start_date']
+next_final['end_date'] = next_final['newest_end_date']
 
-append_df = running_final[~running_final.orgid.isin(final_customer_data.orgid)]
-# 1. Remove the 'expiration_date' column
-final_customer_data = final_customer_data.drop(columns=['expiration_date'])
+# Drop the now redundant columns
+next_final = next_final.drop(columns=['oldest_start_date', 'newest_end_date'])
 
-# 2. Merge 'active_sku' and 'expired_sku' columns, dropping NaNs
-final_customer_data['sku'] = final_customer_data['active_sku'].combine_first(final_customer_data['expired_sku'])
+#print("Main df")
+#print(df.columns.values)
+#print(len(df))
+#print(set(df['orgid']))
+#print(df.to_string())
+#print("Dateprocess df")
+#print(dateprocess_df.columns.values)
+#print(len(dateprocess_df))
+#print(set(dateprocess_df['orgid']))
+#print("Running Final df")
+#print(running_final.columns.values)
+#print(len(running_final))
+#print(set(running_final['orgid']))
+#print(running_final.to_string())
+#print("Merged Dates")
+#print(merged_dates.columns.values)
+#print(len(merged_dates))
+#print(set(merged_dates['orgid']))
+#print("Final Dates")
+#print(final_dates.columns.values)
+#print(len(final_dates))
+#print(set(final_dates['orgid']))
+#print(final_dates.to_string())
+#print("Next Final df")
+#print(next_final.columns.values)
+#print(len(next_final))
+#print(set(next_final['orgid']))
+#print(next_final.to_string())
 
-# 3. Drop the old columns 'active_sku' and 'expired_sku'
-final_customer_data = final_customer_data.drop(columns=['active_sku', 'expired_sku'])
+## Filter out redhat
+rh_email_condition = df['email'].str.contains('@redhat.com', case=False, na=False)
+rh_orgname_condition = df['orgname'].str.contains('red hat', case=False, na=False)
+rh_df = df[rh_email_condition | rh_orgname_condition]
 
-# 4. Rename 'oldest_start_date' to 'start_date' and 'newest_end_date' to 'end_date'
-final_customer_data = final_customer_data.rename(columns={'oldest_start_date': 'start_date', 'newest_end_date': 'end_date'})
+## Filter out IBM
+ibm_email_condition = df['email'].str.contains('@ibm.com', case=False, na=False)
+ibm_orgname_condition = df['orgname'].str.contains('ibm', case=False, na=False)
+ibm_df = df[ibm_email_condition | ibm_orgname_condition]
 
-print(final_customer_data.to_string())
-print(running_final.to_string())
-new_running_final = pd.merge(final_customer_data, running_final, on='orgid', how='left')
+## Just the customers
+customers_df = df[~(ibm_email_condition | ibm_orgname_condition | rh_email_condition | rh_orgname_condition)]
 
-set_with_dataframe(running_final_sheet, new_running_final)
 
-## Step 9: Ouput the results into google sheets
+## Update the dynamic cohorts
+cohorts = dashboard.worksheet('Organizations-dynamic-cohorts')
+cols = cohorts.batch_get(["A2:A", "B2:B"], major_dimension="COLUMNS")
+ibm_orgs = set(cols[0][0])
+rh_orgs = set(cols[1][0])
+
+for org in ibm_df['orgid']:
+    ibm_orgs.add(org)
+
+for org in rh_df['orgid']:
+    rh_orgs.add(org)
+
+cohorts_updates = [
+    {'range': 'A2:A',
+     'values': [[str(org)] for org in ibm_orgs]},
+    {'range': 'B2:B',
+     'values': [[str(org)] for org in rh_orgs]},
+]
+cohorts.batch_update(cohorts_updates)
+
+#print("Customers df")
+#print(len(customers_df))
+#print(customers_df)
+#print(customers_df.to_string())
+
+customers_df = customers_df.copy()
+customers_df['sku'] = customers_df['active_sku'].combine_first(customers_df['expired_sku'])
+customers_df = customers_df.drop(columns=['active_sku', 'expired_sku', 'expiration_date'])
+
+#print("Customers df")
+#print(len(customers_df))
+#print(customers_df.columns.values)
+#print(customers_df.to_string())
+
+#print("Next final")
+#print(len(next_final))
+#print(next_final.columns.values)
+#print(next_final.to_string())
+
+# Join the customers_df and final_df
+final_data = pd.merge(next_final, customers_df, on='orgid', how='outer', suffixes=('_final', '_cust'))
+
+# Create a list of columns to resolve conflicts
+conflict_columns = ['models', 'users', 'completions', 'account', 'orgname', 'accounts', 'email', 'sku', 'start_date', 'end_date']
+
+# Prioritize customers_df columns over final_data columns
+for col in conflict_columns:
+    if col + '_cust' in final_data.columns:
+        final_data[col] = final_data[(col + '_cust')].combine_first(final_data[(col + '_final')])
+        final_data = final_data.drop(columns=[(col+'_cust'), (col+'_final')])
+
+#custcols = [(col + '_cust') for col in conflict_columns]
+#finalcols = [(col + '_final') for col in conflict_columns]
+#final_data = final_data.drop(columns=custcols)
+#final_data = final_data.drop(columns=finalcols)
+
+#print("Final data")
+#print(len(final_data))
+#print(final_data.columns.values)
+#print(final_data.to_string())
+
+# Combine if the orgname is the same
+final_data = final_data.groupby('orgname').agg({
+    'completions': 'sum',                       # Sum the completions
+    'start_date': 'min',                        # Keep the earliest start_date
+    'models': 'first',                          # Choose a method to handle other columns
+    'users': 'first',                           # For example, keep the first entry
+    'account': 'first',
+    'accounts': 'first',
+    'email': 'first',
+    'sku': 'first',
+    'end_date': 'first',                        # Adjust as needed, e.g., keep the first end_date
+    'orgid': 'first',
+}).reset_index()
+
+#print("Final data")
+#print(len(final_data))
+#print(final_data.columns.values)
+#print(final_data.to_string())
+
+set_with_dataframe(running_final_sheet, final_data)
+
+## Ouput the results into google sheets
 today = date.today()
 today_str = today.strftime('%B %d, %Y')
 
@@ -320,17 +419,17 @@ dashboard_mainsheet = get_dashboard_worksheet(today_str)
 header = f"As of {today_str}"
 subtitle = "(over the past 90 days)"
 blank = ""
-total_orgs = str(new_runnign_final['orgid'].nunique())
-total_users = str(new_running_final['users'].sum())
-total_completions = str(new_running_final['completions'].sum())
+total_orgs = str(final_data['orgid'].nunique())
+total_users = str(final_data['users'].sum())
+total_completions = str(final_data['completions'].sum())
 
 #print(top_five_rows)
-top_five_rows = final_customer_data.nlargest(5, 'completions')
+top_five_rows = final_data.nlargest(5, 'completions')
 top_five_rows = top_five_rows[['orgname', 'completions', 'users']]
 top_five_leaderboard = top_five_rows.values.tolist()
 
 #print(append_df.to_string())
-sorted_by_start_date = new_running_final.sort_values(by=['oldest_start_date', 'completions']).reset_index(drop=True)
+sorted_by_start_date = final_data.sort_values(by=['start_date', 'completions']).reset_index(drop=True)
 
 def standardize_times(month, year):
     return month + year*12
@@ -339,7 +438,7 @@ month = 0
 year = 0
 date_totals = {}
 # Get the total labels
-for row in sorted_by_start_date[['oldest_start_date', 'orgname']].itertuples():
+for row in sorted_by_start_date[['start_date', 'orgname']].itertuples():
     stdized = standardize_times(row[1].month, row[1].year)
     if stdized in date_totals:
         date_totals[stdized] += 1
@@ -347,7 +446,7 @@ for row in sorted_by_start_date[['oldest_start_date', 'orgname']].itertuples():
         date_totals[stdized] = 1
 
 monthly_adoptions_rows = []
-for row in sorted_by_start_date[['oldest_start_date', 'orgname']].itertuples():
+for row in sorted_by_start_date[['start_date', 'orgname']].itertuples():
     row_date = row[1]
     row_name = row[2]
     row_month = row_date.month
@@ -379,5 +478,8 @@ updates = [
     {'range': 'F5:H',
      'values': monthly_adoptions_rows}]
 
+
+# This has to happen twice. I do not know why, but it works
+dashboard_mainsheet = get_dashboard_worksheet(today_str)
 dashboard_mainsheet.batch_update(updates)
 
