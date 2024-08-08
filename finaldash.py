@@ -376,19 +376,6 @@ for col in conflict_columns:
 #print(final_data.columns.values)
 #print(final_data.to_string())
 
-# Combine if the orgname is the same
-final_data = final_data.groupby('orgname').agg({
-    'completions': 'sum',                       # Sum the completions
-    'start_date': 'min',                        # Keep the earliest start_date
-    'models': 'first',                          # Choose a method to handle other columns
-    'users': 'first',                           # For example, keep the first entry
-    'account': 'first',
-    'accounts': 'first',
-    'email': 'first',
-    'sku': 'first',
-    'end_date': 'first',                        # Adjust as needed, e.g., keep the first end_date
-    'orgid': 'first',
-}).reset_index()
 
 #print("Final data")
 #print(len(final_data))
