@@ -18,7 +18,7 @@ TODO: Record a video for this
 While it's possible to install all of the dependencies to your system, it's a good practice to use a virtual environment to set this up, do the following commands:
 
 1. Set up the virtual environment
-  - `python -m venv venv`
+  - `python3 -m venv venv`
 
 2. Activate the virtual environment
   - `source venv/bin/activate`
